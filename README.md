@@ -1,0 +1,2 @@
+# AzureFunction
+Demonstrate azure function
