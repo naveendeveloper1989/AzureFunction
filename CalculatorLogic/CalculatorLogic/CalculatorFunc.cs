@@ -18,16 +18,27 @@ namespace CalculatorLogic
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
+            int result = 0;
+            try
+            {
+                int no1 = int.Parse(req.Query["no1"]);
+                int no2 = int.Parse(req.Query["no2"]);
+                string operation = req.Query["opcode"];
+                
+                if (operation == "add")
+                {
+                    result = no1 + no2;
+                }
+            }
+            catch
+            {
+                return new BadRequestObjectResult("Something Went Wrong");
 
-            string name = req.Query["name"];
+            }
+            return (ActionResult)new OkObjectResult($"Hello, {result}");
+            
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
 
-            return name != null
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
-                : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
         }
     }
 }
